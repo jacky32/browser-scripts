@@ -33,7 +33,7 @@ observeDOM(document.querySelector('html'), function(m){
   if (!isMapOnPage) {    
     // const mapsElements = Array.from(document.querySelectorAll('script'));
     //const includes = mapsElements.some(mapsElement => mapsElement.src.includes('https://maps.googleapis.com/')));
-    const includes = m.some(a => a.target.outerHTML.includes('mapa') );
+    const includes = m.some(a => a.target.outerHTML.includes('mapa')) || document.querySelector('#lu_map');
     if (includes) {
       const params = new URLSearchParams(window.location.search);
       console.log(`https://www.google.com/maps/search/?api=1&query=${params.get('q')}`);
@@ -59,6 +59,7 @@ observeDOM(document.querySelector('html'), function(m){
       });
     } 
   }
+});
            
 // window.addEventListener('load', function() {
 //  setTimeout(()=> {
