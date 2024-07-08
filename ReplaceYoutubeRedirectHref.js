@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     ReplaceYoutubeRedirectHref
-// @version  1
+// @version  1.1
 // @grant    none
 // @include  https://www.youtube.com/*
 // ==/UserScript==
@@ -20,7 +20,9 @@ const observeDOM = (function() {
 observeDOM(document.querySelector('html'), (newNodes) => {
   const validNodes = newNodes.filter((node) => node.target.nodeName == 'A' && node.target.href.includes('youtube.com/redirect'));
 	validNodes.forEach((a) => {
-    a.target.href = new URL(a.target.href).searchParams.get('q');
+    const newHref = new URL(a.target.href).searchParams.get('q');
+    if (newHref === null) return;
+    a.target.href = newHref;
   });
 });
 
