@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     GmapsLink
-// @version  1
+// @version  1.1
 // @grant    none
 // @include https://www.google.com/search*
 // ==/UserScript==
@@ -28,15 +28,14 @@ var observeDOM = (function(){
 })()
 
 let isMapOnPage = false;
+const isWeatherPage = document.documentElement.innerHTML.includes('Vyberte oblast');
+if (isWeatherPage) return;
 
 observeDOM(document.querySelector('html'), function(m){ 
   if (!isMapOnPage) {    
-    // const mapsElements = Array.from(document.querySelectorAll('script'));
-    //const includes = mapsElements.some(mapsElement => mapsElement.src.includes('https://maps.googleapis.com/')));
-    const includes = m.some(a => a.target.outerHTML.includes('mapa')) || document.querySelector('#lu_map');
+    const includes = m.some(a => a.target.outerHTML.includes('travel_layout')) || document.querySelector('#lu_map');
     if (includes) {
       const params = new URLSearchParams(window.location.search);
-      console.log(`https://www.google.com/maps/search/?api=1&query=${params.get('q')}`);
       const forms = document.querySelectorAll('form');
       forms.forEach(form => {
         if (form.action == 'https://www.google.com/search') {
@@ -60,32 +59,3 @@ observeDOM(document.querySelector('html'), function(m){
     } 
   }
 });
-           
-// window.addEventListener('load', function() {
-//  setTimeout(()=> {
-//    const mapsElements = Array.from(document.querySelectorAll('script'));
-//    const includes = mapsElements.some(mapsElement => {
-//      if (mapsElement.src.includes('https://maps.googleapis.com/')) {
-//        return true;
-//      } else {
-//        return false;
-//      }
-//    });
-//    if (includes) {
-//      const params = new URLSearchParams(window.location.search);
-//      console.log(`https://www.google.com/maps/search/?api=1&query=${params.get('q')}`);
-//      const forms = document.querySelectorAll('form');
-//      forms.forEach(form => {
-//        if (form.action == 'https://www.google.com/search') {
-//          const aNode = document.createElement("a");
-//					const text = document.createTextNode("Mapy");
-//          aNode.style.zIndex = '500';
-//          aNode.backgroundColor = 'blue';
-//          aNode.href = `https://www.google.com/maps/search/?api=1&query=${params.get('q')}`
-//          aNode.appendChild(text);
-//          form.parentNode.insertBefore(aNode, form.nextSibling);
-//        }
-//      });
-//    } 
-//  }, 3000);
-//}, false);
